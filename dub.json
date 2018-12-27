@@ -1,11 +1,9 @@
 {
 	"name": "hunt-validation",
-	"authors": [
-		"gaoxincheng"
-	],
+	"authors": ["HuntLabs.net"],
 	"description": "A data validation library for Hunt.",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"hunt": "~>1.0.0-rc.5"
+		"hunt": "~>1.0.0-rc.6"
 	}
 }
