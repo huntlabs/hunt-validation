@@ -4,6 +4,6 @@
 	"description": "A data validation library for Hunt.",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"hunt": "~>1.0.0-rc.6"
+		"hunt": "~>1.0.0"
 	}
 }

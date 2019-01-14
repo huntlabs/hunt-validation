@@ -54,8 +54,8 @@ public class SizeValidator(T) : AbstractValidator , ConstraintValidator!(Size, T
 
 	override string getMessage()
 	{
-		import hunt.string.FormatterWrapper;
-		import hunt.util.serialize;
+		import hunt.text.FormatterWrapper;
+		import hunt.util.Serialize;
 
 		return  new FormatterWrapper("{{","}}").format(_size.message,toJSON(_size));
 	}

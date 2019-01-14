@@ -43,8 +43,8 @@ public class PatternValidator : AbstractValidator , ConstraintValidator!(Pattern
 
 	override string getMessage()
 	{
-		import hunt.string.FormatterWrapper;
-		import hunt.util.serialize;
+		import hunt.text.FormatterWrapper;
+		import hunt.util.Serialize;
 
 		return  new FormatterWrapper("{{","}}").format(_pattern.message,toJSON(_pattern));
 	}

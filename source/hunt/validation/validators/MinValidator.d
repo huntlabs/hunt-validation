@@ -15,7 +15,7 @@ import hunt.validation.ConstraintValidator;
 import hunt.validation.ConstraintValidatorContext;
 import hunt.validation.Validator;
 
-import hunt.lang;
+// import hunt.lang;
 
 public class MinValidator : AbstractValidator , ConstraintValidator!(Min, long) {
 
@@ -43,8 +43,8 @@ public class MinValidator : AbstractValidator , ConstraintValidator!(Min, long) 
 
 	override string getMessage()
 	{
-		import hunt.string.FormatterWrapper;
-		import hunt.util.serialize;
+		import hunt.text.FormatterWrapper;
+		import hunt.util.Serialize;
 
 		return  new FormatterWrapper("{{","}}").format(_min.message,toJSON(_min));
 	}

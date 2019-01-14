@@ -44,8 +44,8 @@ public class LengthValidator : AbstractValidator , ConstraintValidator!(Length, 
 
 	override string getMessage()
 	{
-		import hunt.string.FormatterWrapper;
-		import hunt.util.serialize;
+		import hunt.text.FormatterWrapper;
+		import hunt.util.Serialize;
 
 		return  new FormatterWrapper("{{","}}").format(_length.message,toJSON(_length));
 	}
