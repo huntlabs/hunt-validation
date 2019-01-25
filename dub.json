@@ -1,10 +1,10 @@
 {
-	"name": "hunt-validation",
-	"description": "A data validation library for Hunt.",
+    "name": "hunt-validation",
+    "description": "A data validation library for Hunt.",
     "copyright": "Copyright (C) 2018-2019, HuntLabs",
-    "homepage": "https://www.huntlabs.net/",
-	"license": "Apache-2.0",
-	"dependencies": {
-		"hunt": "~>1.0.0"
-	}
+    "homepage": "https://www.huntlabs.net",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "hunt": "~>1.1.0"
+    }
 }
