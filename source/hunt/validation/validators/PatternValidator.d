@@ -46,7 +46,7 @@ public class PatternValidator : AbstractValidator , ConstraintValidator!(Pattern
 		import hunt.text.FormatterWrapper;
 		import hunt.util.Serialize;
 
-		return  new FormatterWrapper("{{","}}").format(_pattern.message,toJSON(_pattern));
+		return  new FormatterWrapper("{{","}}").format(_pattern.message,toJson(_pattern));
 	}
 
 }

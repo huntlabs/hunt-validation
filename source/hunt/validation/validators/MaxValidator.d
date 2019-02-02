@@ -46,6 +46,6 @@ public class MaxValidator : AbstractValidator , ConstraintValidator!(Max, long) 
 		import hunt.text.FormatterWrapper;
 		import hunt.util.Serialize;
 
-		return  new FormatterWrapper("{{","}}").format(_max.message,toJSON(_max));
+		return  new FormatterWrapper("{{","}}").format(_max.message,toJson(_max));
 	}
 }
