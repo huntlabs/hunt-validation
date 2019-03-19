@@ -29,7 +29,8 @@ public class LengthValidator : AbstractValidator , ConstraintValidator!(Length, 
 	override
 	public bool isValid(string data, ConstraintValidatorContext constraintValidatorContext) {
 		scope(exit) constraintValidatorContext.append(this);
-		if(data.length < _length.min || data.length > _length.max)
+		import std.utf;
+		if(data.count < _length.min || data.count > _length.max)
 		{
 			_isValid = false;
 			return false;
