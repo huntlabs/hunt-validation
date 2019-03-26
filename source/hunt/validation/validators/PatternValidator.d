@@ -1,9 +1,9 @@
 /*
- * Hunt - Hunt is a high-level D Programming Language Web framework that encourages rapid development and clean, pragmatic design. It lets you build high-performance Web applications quickly and easily.
+ * Hunt - A data validation for DLang based on hunt library.
  *
- * Copyright (C) 2015-2018  Shanghai Putao Technology Co., Ltd
+ * Copyright (C) 2015-2019, HuntLabs
  *
- * Website: www.huntframework.com
+ * Website: https://www.huntlabs.net
  *
  * Licensed under the Apache-2.0 License.
  *
@@ -19,34 +19,34 @@ import std.regex;
 
 public class PatternValidator : AbstractValidator , ConstraintValidator!(Pattern, string) {
 
-	private Pattern _pattern;
+    private Pattern _pattern;
 
-	override void initialize(Pattern constraintAnnotation){
-		_pattern = constraintAnnotation;
+    override void initialize(Pattern constraintAnnotation){
+        _pattern = constraintAnnotation;
     }
     
-	override
-	public bool isValid(string data, ConstraintValidatorContext constraintValidatorContext) {
-		scope(exit) constraintValidatorContext.append(this);
-		auto m = matchAll(data,regex(_pattern.pattern));
-		if(m.empty)
-		{
-			_isValid = false;
-			return false;
-		}
-		else
-		{
-			_isValid = true;
-			return true;
-		}
-	}
+    override
+    public bool isValid(string data, ConstraintValidatorContext constraintValidatorContext) {
+        scope(exit) constraintValidatorContext.append(this);
+        auto m = matchAll(data,regex(_pattern.pattern));
+        if(m.empty)
+        {
+            _isValid = false;
+            return false;
+        }
+        else
+        {
+            _isValid = true;
+            return true;
+        }
+    }
 
-	override string getMessage()
-	{
-		import hunt.text.FormatterWrapper;
-		import hunt.util.Serialize;
+    override string getMessage()
+    {
+        import hunt.text.FormatterWrapper;
+        import hunt.util.Serialize;
 
-		return  new FormatterWrapper("{{","}}").format(_pattern.message,toJson(_pattern));
-	}
+        return  new FormatterWrapper("{{","}}").format(_pattern.message,toJson(_pattern));
+    }
 
 }

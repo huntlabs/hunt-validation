@@ -1,9 +1,9 @@
 /*
- * Hunt - Hunt is a high-level D Programming Language Web framework that encourages rapid development and clean, pragmatic design. It lets you build high-performance Web applications quickly and easily.
+ * Hunt - A data validation for DLang based on hunt library.
  *
- * Copyright (C) 2015-2018  Shanghai Putao Technology Co., Ltd
+ * Copyright (C) 2015-2019, HuntLabs
  *
- * Website: www.huntframework.com
+ * Website: https://www.huntlabs.net
  *
  * Licensed under the Apache-2.0 License.
  *
@@ -20,38 +20,38 @@ import std.traits;
 
 public class NotEmptyValidator(T) : AbstractValidator , ConstraintValidator!(NotEmpty, T) {
 
-	private NotEmpty _notempty;
+    private NotEmpty _notempty;
 
-	override void initialize(NotEmpty constraintAnnotation){
-		_notempty = constraintAnnotation;
+    override void initialize(NotEmpty constraintAnnotation){
+        _notempty = constraintAnnotation;
     }
     
-	override
-	public bool isValid(T data, ConstraintValidatorContext constraintValidatorContext) {
-		scope(exit) constraintValidatorContext.append(this);
-		
-		if(data is null)
-		{
-			_isValid = false;
-			return false;
-		}
+    override
+    public bool isValid(T data, ConstraintValidatorContext constraintValidatorContext) {
+        scope(exit) constraintValidatorContext.append(this);
+        
+        if(data is null)
+        {
+            _isValid = false;
+            return false;
+        }
 
-		static if(isArray!(T) || isAssociativeArray!(T) || is(T == string))
-		{	
-			_isValid =  data.length > 0;
-			return _isValid;
-		}
-		else 
-		{
-			throw new ValidationException("not support type : ",T.stringof);
-			_isValid = false;
-			return false;
-		}
+        static if(isArray!(T) || isAssociativeArray!(T) || is(T == string))
+        {    
+            _isValid =  data.length > 0;
+            return _isValid;
+        }
+        else 
+        {
+            throw new ValidationException("not support type : ",T.stringof);
+            _isValid = false;
+            return false;
+        }
 
-	}
+    }
 
-	override string getMessage()
-	{
-		return _notempty.message;
-	}
+    override string getMessage()
+    {
+        return _notempty.message;
+    }
 }

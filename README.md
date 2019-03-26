@@ -2,4 +2,4 @@
 
 # hunt-validation
 
-A data validation library for Hunt.
+A data validation library for DLang based on hunt library.

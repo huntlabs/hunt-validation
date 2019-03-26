@@ -1,9 +1,9 @@
 /*
- * Hunt - Hunt is a high-level D Programming Language Web framework that encourages rapid development and clean, pragmatic design. It lets you build high-performance Web applications quickly and easily.
+ * Hunt - A data validation for DLang based on hunt library.
  *
- * Copyright (C) 2015-2018  Shanghai Putao Technology Co., Ltd
+ * Copyright (C) 2015-2019, HuntLabs
  *
- * Website: www.huntframework.com
+ * Website: https://www.huntlabs.net
  *
  * Licensed under the Apache-2.0 License.
  *
@@ -14,7 +14,7 @@ import hunt.validation.ConstraintValidatorContext;
 
 interface Valid {
 
-	///make valid and return result 
+    ///make valid and return result 
     ConstraintValidatorContext valid();
 }
 

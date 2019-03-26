@@ -1,9 +1,9 @@
 /*
- * Hunt - Hunt is a high-level D Programming Language Web framework that encourages rapid development and clean, pragmatic design. It lets you build high-performance Web applications quickly and easily.
+ * Hunt - A data validation for DLang based on hunt library.
  *
- * Copyright (C) 2015-2018  Shanghai Putao Technology Co., Ltd
+ * Copyright (C) 2015-2019, HuntLabs
  *
- * Website: www.huntframework.com
+ * Website: https://www.huntlabs.net
  *
  * Licensed under the Apache-2.0 License.
  *
@@ -19,31 +19,31 @@ import std.string;
 
 public class NotBlankValidator : AbstractValidator , ConstraintValidator!(NotBlank, string) {
 
-	private NotBlank _notblank;
+    private NotBlank _notblank;
 
-	override void initialize(NotBlank constraintAnnotation){
-		_notblank = constraintAnnotation;
+    override void initialize(NotBlank constraintAnnotation){
+        _notblank = constraintAnnotation;
     }
     
-	override
-	public bool isValid(string data, ConstraintValidatorContext constraintValidatorContext) {
-		scope(exit) constraintValidatorContext.append(this);
-		
-		if(data is null || data.strip.length == 0)
-		{
-			_isValid = false;
-			return false;
-		}
-		else
-		{
-			_isValid = true;
-			return true;
-		}
+    override
+    public bool isValid(string data, ConstraintValidatorContext constraintValidatorContext) {
+        scope(exit) constraintValidatorContext.append(this);
+        
+        if(data is null || data.strip.length == 0)
+        {
+            _isValid = false;
+            return false;
+        }
+        else
+        {
+            _isValid = true;
+            return true;
+        }
 
-	}
+    }
 
-	override string getMessage()
-	{
-		return _notblank.message;
-	}
+    override string getMessage()
+    {
+        return _notblank.message;
+    }
 }

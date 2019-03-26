@@ -1,9 +1,9 @@
 /*
- * Hunt - Hunt is a high-level D Programming Language Web framework that encourages rapid development and clean, pragmatic design. It lets you build high-performance Web applications quickly and easily.
+ * Hunt - A data validation for DLang based on hunt library.
  *
- * Copyright (C) 2015-2018  Shanghai Putao Technology Co., Ltd
+ * Copyright (C) 2015-2019, HuntLabs
  *
- * Website: www.huntframework.com
+ * Website: https://www.huntlabs.net
  *
  * Licensed under the Apache-2.0 License.
  *
@@ -22,7 +22,7 @@ import std.string;
 
 public class EmailValidator : AbstractValidator , ConstraintValidator!(Email, string) {
 
-	static const string ATOM = "[a-z0-9!#$%&'*+/=?^_`{|}~-]";
+    static const string ATOM = "[a-z0-9!#$%&'*+/=?^_`{|}~-]";
     static const string DOMAIN = "(" ~ ATOM ~ "+(\\." ~ ATOM ~ "+)+";
     static const string IP_DOMAIN = "\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]";
 
@@ -32,49 +32,49 @@ public class EmailValidator : AbstractValidator , ConstraintValidator!(Email, st
                     ~ "|"
                     ~ IP_DOMAIN
                     ~ ")$";
-	private  Email _email;
+    private  Email _email;
 
-	override void initialize(Email constraintAnnotation) {
-		_email = constraintAnnotation;
+    override void initialize(Email constraintAnnotation) {
+        _email = constraintAnnotation;
     }
     
-	override
-	public bool isValid(string data, ConstraintValidatorContext constraintValidatorContext) {
-		scope(exit) constraintValidatorContext.append(this);	
+    override
+    public bool isValid(string data, ConstraintValidatorContext constraintValidatorContext) {
+        scope(exit) constraintValidatorContext.append(this);    
 
-		auto splitPosition = data.indexOf( '@' );
+        auto splitPosition = data.indexOf( '@' );
 
-		// need to check if
-		if ( splitPosition < 0 ) {
-			_isValid = false;
-			return false;
-		}
+        // need to check if
+        if ( splitPosition < 0 ) {
+            _isValid = false;
+            return false;
+        }
 
-		// string localPart = data[0 .. splitPosition];
-		// string domainPart = data[splitPosition+1 .. $];
+        // string localPart = data[0 .. splitPosition];
+        // string domainPart = data[splitPosition+1 .. $];
 
-		// if ( !isValidEmailLocalPart( localPart ) ) {
-		// 	return false;
-		// }
+        // if ( !isValidEmailLocalPart( localPart ) ) {
+        //     return false;
+        // }
 
-		// return DomainNameUtil.isValidEmailDomainAddress( domainPart );
-		_isValid = isValidEmail(data);
+        // return DomainNameUtil.isValidEmailDomainAddress( domainPart );
+        _isValid = isValidEmail(data);
 
-		return _isValid;
-	}
+        return _isValid;
+    }
 
-	private bool isValidEmailLocalPart(string localPart) {
-		auto matcher = matchAll(localPart, regex("^" ~ ATOM ~ "+(\\." ~ ATOM ~ "+)*"));
-		return !matcher.empty();
-	}
+    private bool isValidEmailLocalPart(string localPart) {
+        auto matcher = matchAll(localPart, regex("^" ~ ATOM ~ "+(\\." ~ ATOM ~ "+)*"));
+        return !matcher.empty();
+    }
 
-	private bool isValidEmail(string email) {
-		auto matcher = matchAll(email, regex( _email.pattern.length == 0 ? PATTERN : _email.pattern));
-		return !matcher.empty();
-	}
+    private bool isValidEmail(string email) {
+        auto matcher = matchAll(email, regex( _email.pattern.length == 0 ? PATTERN : _email.pattern));
+        return !matcher.empty();
+    }
 
-	override string getMessage()
-	{
-		return _email.message;
-	}
+    override string getMessage()
+    {
+        return _email.message;
+    }
 }

@@ -1,9 +1,9 @@
 /*
- * Hunt - Hunt is a high-level D Programming Language Web framework that encourages rapid development and clean, pragmatic design. It lets you build high-performance Web applications quickly and easily.
+ * Hunt - A data validation for DLang based on hunt library.
  *
- * Copyright (C) 2015-2018  Shanghai Putao Technology Co., Ltd
+ * Copyright (C) 2015-2019, HuntLabs
  *
- * Website: www.huntframework.com
+ * Website: https://www.huntlabs.net
  *
  * Licensed under the Apache-2.0 License.
  *
@@ -19,33 +19,33 @@ import hunt.validation.Validator;
 
 public class MaxValidator : AbstractValidator , ConstraintValidator!(Max, long) {
 
-	private Max _max;
+    private Max _max;
 
-	override void initialize(Max constraintAnnotation){
-		_max = constraintAnnotation;
+    override void initialize(Max constraintAnnotation){
+        _max = constraintAnnotation;
     }
     
-	override
-	public bool isValid(long data, ConstraintValidatorContext constraintValidatorContext) {
-		//null values are valid
-		scope(exit) constraintValidatorContext.append(this);
-		if(data > _max.value)
-		{
-			_isValid = false;
-			return false;
-		}
-		else
-		{
-			_isValid = true;
-			return true;
-		}
-	}
+    override
+    public bool isValid(long data, ConstraintValidatorContext constraintValidatorContext) {
+        //null values are valid
+        scope(exit) constraintValidatorContext.append(this);
+        if(data > _max.value)
+        {
+            _isValid = false;
+            return false;
+        }
+        else
+        {
+            _isValid = true;
+            return true;
+        }
+    }
 
-	override string getMessage()
-	{
-		import hunt.text.FormatterWrapper;
-		import hunt.util.Serialize;
+    override string getMessage()
+    {
+        import hunt.text.FormatterWrapper;
+        import hunt.util.Serialize;
 
-		return  new FormatterWrapper("{{","}}").format(_max.message,toJson(_max));
-	}
+        return  new FormatterWrapper("{{","}}").format(_max.message,toJson(_max));
+    }
 }
