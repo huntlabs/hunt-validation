@@ -38,7 +38,7 @@ public class NotEmptyValidator(T) : AbstractValidator , ConstraintValidator!(Not
 
         static if(isArray!(T) || isAssociativeArray!(T) || is(T == string))
         {    
-            _isValid =  data.length > 0;
+            _isValid = data.strip().length > 0;
             return _isValid;
         }
         else 
