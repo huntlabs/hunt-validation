@@ -17,44 +17,36 @@ import hunt.validation.Validator;
 import std.json;
 import std.format;
 
-class DefaultConstraintValidatorContext :  ConstraintValidatorContext  
-{
+class DefaultConstraintValidatorContext : ConstraintValidatorContext {
     private Validator[] _validators;
     private bool _isValid = true;
 
-    override public string toString()
-    {
+    override string toString() {
         return json().toString;
     }
 
-    override public string[string] messages()
-    {
+    override string[string] messages() {
         string[string] msg;
-        foreach(v; _validators) {
-            if(!v.isValid)
-            {
+        foreach (v; _validators) {
+            if (!v.isValid) {
                 msg[v.getPropertyName] = v.getMessage;
             }
         }
         return msg;
     }
 
-
-    public JSONValue json()
-    {
+    JSONValue json() {
         return JSONValue(messages());
     }
 
-    override public ConstraintValidatorContext append(Validator v)
-    {
+    override ConstraintValidatorContext append(Validator v) {
         _validators ~= v;
-        if(!v.isValid)
+        if (!v.isValid)
             _isValid = false;
         return this;
     }
 
-    override public bool isValid()
-    {
+    override bool isValid() {
         return _isValid;
     }
 }
