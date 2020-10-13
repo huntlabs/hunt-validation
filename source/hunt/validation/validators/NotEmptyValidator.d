@@ -18,6 +18,8 @@ import hunt.validation.Validator;
 import std.string;
 import std.traits;
 
+import hunt.logging.ConsoleLogger;
+
 public class NotEmptyValidator(T) : AbstractValidator , ConstraintValidator!(NotEmpty, T) {
 
     private NotEmpty _notempty;
@@ -30,20 +32,28 @@ public class NotEmptyValidator(T) : AbstractValidator , ConstraintValidator!(Not
     public bool isValid(T data, ConstraintValidatorContext constraintValidatorContext) {
         scope(exit) constraintValidatorContext.append(this);
         
-        if(data is null)
-        {
-            _isValid = false;
-            return false;
+        static if(is(T == class)) {
+            if(data is null)
+            {
+                _isValid = false;
+                return false;
+            }
         }
 
         static if(isArray!(T) || isAssociativeArray!(T) || is(T == string))
         {    
             _isValid = data.strip().length > 0;
             return _isValid;
+        } else static if(is(T == class)) {
+            if(data is null)
+            {
+                _isValid = false;
+                return false;
+            }
         }
         else 
         {
-            throw new ValidationException("not support type : ",T.stringof);
+            warningf("not support type: %s", T.stringof);
             _isValid = false;
             return false;
         }
