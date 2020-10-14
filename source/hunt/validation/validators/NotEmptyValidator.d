@@ -18,9 +18,7 @@ import hunt.validation.Validator;
 import std.string;
 import std.traits;
 
-import hunt.logging.ConsoleLogger;
-
-public class NotEmptyValidator(T) : AbstractValidator , ConstraintValidator!(NotEmpty, T) {
+class NotEmptyValidator(T) : AbstractValidator , ConstraintValidator!(NotEmpty, T) {
 
     private NotEmpty _notempty;
 
@@ -53,9 +51,7 @@ public class NotEmptyValidator(T) : AbstractValidator , ConstraintValidator!(Not
         }
         else 
         {
-            warningf("not support type: %s", T.stringof);
-            _isValid = false;
-            return false;
+            static assert(false, "Unsupported type for NotEmptyValidator: " ~ T.stringof);
         }
 
     }
