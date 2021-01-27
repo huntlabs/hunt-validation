@@ -45,7 +45,7 @@ public class RangeValidator : AbstractValidator , ConstraintValidator!(Range, lo
     override string getMessage()
     {
         import hunt.text.FormatterWrapper;
-        import hunt.util.Serialize;
+        import hunt.serialization.JsonSerializer;
 
         return  new FormatterWrapper("{{","}}").format(_range.message,toJson(_range));
     }

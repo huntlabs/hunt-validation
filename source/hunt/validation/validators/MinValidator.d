@@ -44,7 +44,7 @@ public class MinValidator : AbstractValidator , ConstraintValidator!(Min, long) 
     override string getMessage()
     {
         import hunt.text.FormatterWrapper;
-        import hunt.util.Serialize;
+        import hunt.serialization.JsonSerializer;
 
         return  new FormatterWrapper("{{","}}").format(_min.message,toJson(_min));
     }
