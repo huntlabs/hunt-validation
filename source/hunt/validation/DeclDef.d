@@ -38,6 +38,10 @@ import hunt.validation.constraints.Range;
 mixin template MakeValid()
 {
     mixin(makeValidInit);
+
+    // Debug
+    // pragma(msg, makeDoValid!(typeof(this)));
+
     mixin(makeDoValid!(typeof(this)));
 }
 
@@ -65,194 +69,224 @@ bool hasAnnotation(T, A)() {
 string makeDoValid(T)()
 {
     string str = `
-        private ConstraintValidatorContext doValid()
-        {
+        private ConstraintValidatorContext doValid() {
             if(_context is null)
                 _context = new DefaultConstraintValidatorContext();
             return doValid(_context);
         }
 
-        public ConstraintValidatorContext doValid(ConstraintValidatorContext context)
-        {`;
+        public ConstraintValidatorContext doValid(ConstraintValidatorContext context) {`;
             foreach(memberName; __traits(derivedMembers, T)) {
                 static if (__traits(getProtection, __traits(getMember, T, memberName)) == "public") {
                     alias memType = typeof(__traits(getMember, T ,memberName));
                     static if (!isFunction!(memType)) {
                         static if(hasUDA!(__traits(getMember, T ,memberName), Max))
                         {
-                str    ~=`        {
+                    str    ~=`
+                        {
                                 MaxValidator validator = new MaxValidator();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), Max)[0]).stringof == Max.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), Max)[0] == Max))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Max)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Max)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Max)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Max)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
                         }
+                            `;
+                        }
+
                         static if(hasUDA!(__traits(getMember, T ,memberName), Min))
                         {
-                str    ~=`        {
+                    str    ~=`
+                        {
                                 MinValidator validator = new MinValidator();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), Min)[0]).stringof == Min.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), Min)[0] == Min))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Min)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Min)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Min)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Min)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
                         }
+                            `;
+                        }
+
                         static if(hasUDA!(__traits(getMember, T ,memberName), AssertFalse))
                         {
-                str    ~=`        {
+                    str    ~=`
+                        {
                                 AssertFalseValidator validator = new AssertFalseValidator();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), AssertFalse)[0]).stringof == AssertFalse.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), AssertFalse)[0] == AssertFalse))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), AssertFalse)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), AssertFalse)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), AssertFalse)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), AssertFalse)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
                         }
+                            `;
+                        }
+
                         static if(hasUDA!(__traits(getMember, T ,memberName), AssertTrue))
                         {
-                str    ~=`        {
+                    str    ~=`
+                        {
                                 AssertTrueValidator validator = new AssertTrueValidator();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), AssertTrue)[0]).stringof == AssertTrue.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), AssertTrue)[0] == AssertTrue))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), AssertTrue)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), AssertTrue)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), AssertTrue)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), AssertTrue)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
                         }
+                            `;
+                        }
+
                         static if(hasUDA!(__traits(getMember, T ,memberName), Email))
                         {
-                str    ~=`        {
+                    str    ~=`
+                        {
                                 EmailValidator validator = new EmailValidator();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), Email)[0]).stringof == Email.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), Email)[0] == Email))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Email)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Email)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Email)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Email)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
                         }
+                            `;
+                        }
+
                         static if(hasUDA!(__traits(getMember, T ,memberName), Length))
                         {
-                str    ~=`        {
+                    str    ~=`
+                        {
                                 LengthValidator validator = new LengthValidator();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), Length)[0]).stringof == Length.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), Length)[0] == Length))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Length)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Length)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Length)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Length)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
                         }
+                            `;
+                        }
+
                         static if(hasUDA!(__traits(getMember, T ,memberName), NotBlank))
                         {
-                str    ~=`        {
+                    str    ~=`
+                        {
                                 NotBlankValidator validator = new NotBlankValidator();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), NotBlank)[0]).stringof == NotBlank.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), NotBlank)[0] == NotBlank))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), NotBlank)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), NotBlank)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), NotBlank)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), NotBlank)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
                         }
+                            `;
+                        }
+
                         static if(hasUDA!(__traits(getMember, T ,memberName), NotEmpty))
                         {
-                str    ~=`        {
+                    str    ~=`
+                        {
                                 auto validator = new NotEmptyValidator!`~memType.stringof~`();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), NotEmpty)[0]).stringof == NotEmpty.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), NotEmpty)[0] == NotEmpty))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), NotEmpty)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), NotEmpty)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), NotEmpty)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), NotEmpty)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
                         }
+                            `;
+                        }
+
                         static if(hasUDA!(__traits(getMember, T ,memberName), Pattern))
                         {
-                str    ~=`        {
+                    str    ~=`
+                        {
                                 PatternValidator validator = new PatternValidator();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), Pattern)[0]).stringof == Pattern.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), Pattern)[0] == Pattern))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Pattern)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Pattern)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Pattern)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Pattern)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
                         }
+                            `;
+                        }
+
                         static if(hasUDA!(__traits(getMember, T ,memberName), Size))
                         {
-                str    ~=`        {
+                    str    ~=`
+                        {
                                 auto validator = new SizeValidator!`~memType.stringof~`();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), Size)[0]).stringof == Size.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), Size)[0] == Size))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Size)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Size)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Size)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Size)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
                         }
+                            `;
+                        }
+
                         static if(hasUDA!(__traits(getMember, T ,memberName), Range))
                         {
-                str    ~=`        {
+                str    ~=`
+                        {
                                 RangeValidator validator = new RangeValidator();`;
-                                static if((getUDAs!(__traits(getMember, T ,memberName), Range)[0]).stringof == Range.stringof)
+                                static if(is(getUDAs!(__traits(getMember, T ,memberName), Range)[0] == Range))
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Range)[0]).stringof~ `());`; 
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Range)[0].stringof~ `());`; 
                                 }
                                 else
                                 {
-                                    str    ~=`    validator.initialize(`~ (getUDAs!(__traits(getMember, T ,memberName), Range)[0]).stringof~ `);`;
+                                    str    ~=`    validator.initialize(`~ getUDAs!(__traits(getMember, T ,memberName), Range)[0].stringof~ `);`;
                                 }
                     str    ~=`        validator.setPropertyName(`~memberName.stringof~`);
                                 validator.isValid(this.` ~ memberName ~ `,context);
-                            }`;
+                        }
+                            `;
                         }
                     }
                 }

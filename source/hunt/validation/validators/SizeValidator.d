@@ -18,6 +18,7 @@ import hunt.validation.Validator;
 
 import hunt.logging;
 import std.string;
+import std.traits;
 
 public class SizeValidator(T) : AbstractValidator , ConstraintValidator!(Size, T) {
 
