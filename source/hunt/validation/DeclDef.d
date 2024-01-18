@@ -39,7 +39,8 @@ mixin template MakeValid()
 {
     mixin(makeValidInit);
 
-    // Debug
+    // Debug: 
+    // bug: https://issues.dlang.org/show_bug.cgi?id=24344
     // pragma(msg, makeDoValid!(typeof(this)));
 
     mixin(makeDoValid!(typeof(this)));

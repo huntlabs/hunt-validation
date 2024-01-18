@@ -46,9 +46,7 @@ public class SizeValidator(T) : AbstractValidator , ConstraintValidator!(Size, T
         }
         else 
         {
-            throw new Exception("not support type : ",T.stringof);
-            _isValid = false;
-            return false;
+            throw new Exception("Unsupported type : ",T.stringof);
         }
 
     }
@@ -56,8 +54,8 @@ public class SizeValidator(T) : AbstractValidator , ConstraintValidator!(Size, T
     override string getMessage()
     {
         import hunt.text.FormatterWrapper;
-        import hunt.util.Serialize;
+        import hunt.serialization.JsonSerializer;
 
-        return  new FormatterWrapper("{{","}}").format(_size.message,toJSON(_size));
+        return  new FormatterWrapper("{{","}}").format(_size.message, toJson(_size));
     }
 }
